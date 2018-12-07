@@ -56,11 +56,24 @@ declare function local:fix-permissions() {
     })
 };
 
-anno:create-collection(),
-local:setuid(xs:anyURI($target || "/modules/users.xql")),
-local:mkcol("/db", "resources/commons"),
-sm:chgrp(xs:anyURI("/db/resources"), $config:default-group),
-sm:chgrp(xs:anyURI("/db/resources/commons"), $config:default-group),
-sm:chmod(xs:anyURI("/db/resources"), "rwxr-xr-x"),
-sm:chmod(xs:anyURI("/db/resources/commons"), "rwxr-xr-x"),
-local:fix-permissions()
+(
+	anno:create-collection()
+	,
+	local:setuid(xs:anyURI($target || "/modules/users.xql"))
+	,
+	local:mkcol("/db", "resources/commons")
+	,
+	sm:chgrp(xs:anyURI("/db/resources"), $config:default-group)
+	,
+	sm:chgrp(xs:anyURI("/db/resources/commons"), $config:default-group)
+	,
+	sm:chmod(xs:anyURI("/db/resources"), "rwxr-xr-x")
+	,
+	sm:chmod(xs:anyURI("/db/resources/commons"), "rwxr-xr-x")
+	,
+	local:fix-permissions()
+	,
+	local:setuid(xs:anyURI("/apps/wiki/modules/display/image-view.xql"))
+	,
+	local:setuid(xs:anyURI("/apps/wiki/modules/display/image-link-generator.xqm"))
+)
