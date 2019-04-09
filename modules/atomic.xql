@@ -1,4 +1,4 @@
-xquery version "3.0";
+xquery version "3.1";
 
 module namespace atomic="http://atomic.exist-db.org/xquery/atomic";
 
@@ -38,13 +38,13 @@ declare function atomic:process-img($node as element()) {
     let $src := $node/@src
     let $resolved :=
         if (contains($src, "/rest/db/apps/"))
-        then $src || $config:IMAGE_THUMBNAIL
+        then $src
         else
             if (starts-with($src, "/")) then
                 $config:base-url || $src
             else
                 $src
-
+    
     return
         element { node-name($node) } {
             $node/@* except ($node/@alt, $node/@src, $node/@class),
@@ -111,7 +111,7 @@ declare function atomic:get-content($content as element(atom:content)?, $eval as
                 case "html" case "xhtml" return
                     $content/*
                 case "markdown" return
-                    <div>{md:parse($content/string(), ($md:HTML-CONFIG, $atomic:MD_CONFIG))}</div>
+                    <div>{md:parse($content/string(), $atomic:MD_CONFIG)}</div>
                 default return
                     $content/node()
     return
@@ -161,7 +161,7 @@ declare function atomic:lock-for-user($feed as element(atom:entry)) {
                 ()
 };
 
-declare function atomic:unlock-for-user() as empty() {
+declare function atomic:unlock-for-user() as empty-sequence() {
     let $collection := request:get-parameter("collection", ())
     let $resource := request:get-parameter("resource", ())
     let $unlocked :=

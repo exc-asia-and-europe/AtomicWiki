@@ -121,7 +121,7 @@ declare function local:add-user-to-group() {
                     ()
             ),
             <ok status="ok">
-(:                {{console:log("adding member: " || $id)}}:)
+                {console:log("adding member: " || $id)}
                 {sm:add-group-member($group, $id)}
             </ok>
         ) else
@@ -232,14 +232,14 @@ declare function local:check-user($action as function(*)) {
 declare function local:change-password() {
     let $user := local:real-user()
     let $pass := request:get-parameter("password", ())
-(:    let $log := console:log("wiki", "Changing password for user " || $user || " to " || $pass):)
+    let $log := console:log("wiki", "Changing password for user " || $user || " to " || $pass)
     return
         try {
             <ok status="ok">{
                 sm:passwd($user, $pass)
             }</ok>
         } catch * {
-            <error status="access-denied" message="{$err:description}"/>
+            <error status="access-denied" message="{$err:message}"/>
         }
 };
 

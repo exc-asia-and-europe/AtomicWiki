@@ -134,7 +134,7 @@ declare function store:process-html($content as xs:string?) {
 declare function store:parse-gallery() {
     let $data := request:get-parameter-names()
     let $title := request:get-parameter("title", ())
-    let $name := request:get-parameter("sname", ())
+    let $name := request:get-parameter("name", ())
     let $content := util:parse-html(request:get-parameter("content", ()))
     let $id := request:get-parameter("galleryId", util:uuid()) 
     let $result := 
@@ -219,7 +219,7 @@ declare function store:gallery-entry($entry as node()) {
 
 
 declare function store:article() {
-    let $filename := request:get-parameter("sname", ())
+    let $filename := request:get-parameter("name", ())
     let $id := request:get-parameter("entryId", ())
     let $published := request:get-parameter("published", current-dateTime())
     let $title := request:get-parameter("title", ())
@@ -424,11 +424,13 @@ declare function store:delete-feed($collection as xs:string) {
 declare function store:delete-article() {
     let $id := request:get-parameter("id", ())
     let $collection := request:get-parameter("collection", ())
+        
     return
         if ($collection) then
             store:delete-feed($collection)
         else 
             let $article := collection($config:wiki-root)//atom:entry[atom:id = $id]
+            let $log := util:log("INFO", count($article))
             return
                 if ($article) then
                     store:delete-article($article)
@@ -437,7 +439,7 @@ declare function store:delete-article() {
 };
 
 declare function store:validate() {
-    let $name := request:get-parameter("sname", ())
+    let $name := request:get-parameter("name", ())
     let $nameValid := collection($config:wiki-root)//wiki:id[. = $name]
     return
         if (empty($nameValid)) then
@@ -449,6 +451,7 @@ declare function store:validate() {
 let $action := request:get-parameter("action", "store")
 let $id := request:get-parameter("entryId", ())
 let $type := request:get-parameter("ctype", "html")
+
 return
     try {
         if (request:get-parameter("validate", ())) then

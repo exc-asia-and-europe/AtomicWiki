@@ -14,10 +14,11 @@ declare namespace expath="http://expath.org/ns/pkg";
 declare namespace atom="http://www.w3.org/2005/Atom";
 declare namespace templates="http://exist-db.org/xquery/templates";
 
-declare variable $config:default-user := ("editor", "editor");
+declare variable $config:default-user := ("editor", "");
 declare variable $config:default-group := "biblio.users";
 declare variable $config:users-group := "wiki.users";
 declare variable $config:admin-group := "wiki-admin";
+declare variable $config:admin-pass := "";
 
 (: 
     Determine the application root collection from the current module load path.
@@ -91,8 +92,8 @@ declare variable $config:wiki-root :=
 
 declare variable $config:wiki-data :=
     substring-after($config:wiki-root, $config:app-root);
-    
-declare variable $config:data := "/resources";
+
+declare variable $config:data := "/db/resources";
     
 declare variable $config:items-per-page := 
     let $itemsPerPage := $config:wiki-config/configuration/items-per-page/string()

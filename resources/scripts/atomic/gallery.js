@@ -37,7 +37,7 @@ $(document).ready(function() {
     });
 
 
-    $("#gallery").on("click", ".add-image", function(event){       
+    $("#gallery").on("click", ".add-image", function(event){
         event.preventDefault();
         addImage();
     }); 
@@ -87,7 +87,7 @@ $(document).ready(function() {
         
     });
     loadImages();
-    $("#query-images").click(function (ev) {   
+    $("#query-images").click(function (ev) {
         console.debug("clicked on load images button!")
         loadImages(1)
     });

@@ -125,6 +125,9 @@ declare function app:get-or-create-entry($node as node(), $model as map(*), $loc
     let $feed := $model("feed")
     let $id := request:get-parameter("id", ())
     let $wikiId := request:get-parameter("wiki-id", ())
+    let $log := util:log("INFO", "($id or $wikiId) = " || ($id or $wikiId))
+    let $log := util:log("INFO", "action = " || request:get-parameter("action", ()))
+    
     return
         element { node-name($node) } {
             $node/@*,
